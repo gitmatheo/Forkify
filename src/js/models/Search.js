@@ -6,15 +6,19 @@ export default class Search {
   }
 
   async getResults() {
-    const proxy = `https://cors-anywhere.herokuapp.com/`;
-    const key = "7bac983105bb52ae23664f806a793475";
+    // const proxy = `https://cors-anywhere.herokuapp.com/`;
+    const KEY = "04e7ee6d9dd8c947f0f4c283981bd332";
+    const ID = "9746243b";
+
     try {
       const res = await axios(
-        `${proxy}http://food2fork.com/api/search?key=${key}&q=${this.query}`
+        `https://api.edamam.com/search?&q=${
+          this.query
+        }&app_id=${ID}&app_key=${KEY}`
       );
-      this.result = res.data.recipes;
+      this.result = res.data.hits;
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
   }
 }
