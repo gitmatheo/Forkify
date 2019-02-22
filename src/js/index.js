@@ -1,7 +1,7 @@
 // Global app controller
 import Search from "./models/Search";
 import * as searchView from "./views/searchView";
-import { elements } from "./views/base";
+import { elements, renderLoader, clearLoader } from "./views/base";
 
 // Global state of the app
 //  Search object
@@ -24,10 +24,14 @@ const controlSearch = async () => {
     //3) Prepare UI for results
     searchView.clearInput();
     searchView.clearResults();
+    renderLoader(elements.searchRes);
+    console.log(elements.searchdsaRes);
+
     //4) Search for recipes
     await state.search.getResults();
 
     //5)Render results in UI
+    clearLoader();
     searchView.renderResults(state.search.result);
   }
 };
@@ -35,6 +39,17 @@ const controlSearch = async () => {
 elements.searchForm.addEventListener("submit", e => {
   e.preventDefault();
   controlSearch();
+});
+
+//event delegation
+elements.searchResPages.addEventListener("click", e => {
+  const btn = e.target.closest(".btn-inline");
+
+  if (btn) {
+    const goToPage = parseInt(btn.dataset.goto, 10);
+    searchView.clearResults();
+    searchView.renderResults(state.search.result, goToPage);
+  }
 });
 
 // const search = new Search("pizza");
